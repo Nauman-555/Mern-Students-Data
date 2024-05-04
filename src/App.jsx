@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Papa from "papaparse";
+import "./App.css";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import {
@@ -69,7 +70,9 @@ function App() {
 
   const handleUpdate = (index) => {
     setUpdateIndex(index);
-    setUpdatedValues(data[index]);
+    // Exclude the ID field from updatedValues
+    const { id, ...rest } = data[index];
+    setUpdatedValues({ ...rest });
   };
 
   const handleInputChange = (e) => {
@@ -120,32 +123,33 @@ function App() {
 
   return (
     <div className="container mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-4 text-center">
+      <h1 className="text-3xl font-bold mb-4 md: ml-10 text-center">
         REACTJS CSV IMPORT EXAMPLE
       </h1>
       <form
         onSubmit={handleOnSubmit}
-        className="mb-4 flex items-center justify-center"
+        className="mb-4 flex flex-col items-center justify-center"
       >
         <input
           type="file"
           id="csvFileInput"
           accept=".csv"
           onChange={handleOnChange}
-          className="border border-gray-300 px-4 py-2 mr-2"
+          className="border border-gray-300 md: ml-10 px-4 py-2 mb-2 "
         />
         <button
           type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="bg-blue-500 hover:bg-blue-700 text-white md: ml-10 font-bold py-2 px-4 rounded"
         >
           IMPORT CSV
         </button>
       </form>
       <div className="w-full flex justify-center">
-        <div className="w-3/4">
-          <h2 className="text-center mb-4">
+        <div className="w-full ">
+          <h2 className="text-center mb-2">
             Data from Firebase Realtime Database
           </h2>
+
           {data.length > 0 ? (
             <table className="table-auto mx-auto">
               <thead>
@@ -186,7 +190,7 @@ function App() {
                         </button>
                         <button
                           onClick={() => handleDelete(index)}
-                          className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+                          className="bg-red-500 hover:bg-red-700 text-white md: mt-2 md: ml-1 font-bold py-1 px-2 rounded"
                         >
                           Delete
                         </button>
@@ -201,35 +205,44 @@ function App() {
           )}
         </div>
       </div>
+
       {updateIndex !== null && (
-        <div className="update-form mt-4">
-          <h2 className="text-center mb-2">Update Item</h2>
-          <form
-            onSubmit={handleUpdateSubmit}
-            className="flex flex-col items-center"
-          >
-            {Object.keys(updatedValues).map((key, index) => (
-              <div key={index} className="mb-2">
-                <label htmlFor={key} className="mr-2">
-                  {key}
-                </label>
-                <input
-                  type="text"
-                  id={key}
-                  name={key}
-                  value={updatedValues[key]}
-                  onChange={handleInputChange}
-                  className="border border-gray-300 px-2 py-1"
-                />
-              </div>
-            ))}
-            <button
-              type="submit"
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+        <div className="modal-bg">
+          <div className="modal">
+            <h2 className="text-center mb-2">Update Item</h2>
+            <form
+              onSubmit={handleUpdateSubmit}
+              className="flex flex-col items-center"
             >
-              Update
+              {Object.keys(updatedValues).map((key, index) => (
+                <div key={index} className="mb-2">
+                  <label htmlFor={key} className="mr-2">
+                    {key}
+                  </label>
+                  <input
+                    type="text"
+                    id={key}
+                    name={key}
+                    value={updatedValues[key]}
+                    onChange={handleInputChange}
+                    className="border border-gray-300 px-2 py-1"
+                  />
+                </div>
+              ))}
+              <button
+                type="submit"
+                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+              >
+                Update
+              </button>
+            </form>
+            <button
+              onClick={() => setUpdateIndex(null)}
+              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-2"
+            >
+              Close
             </button>
-          </form>
+          </div>
         </div>
       )}
       <div className="flex justify-center">
