@@ -146,7 +146,7 @@ function App() {
       </form>
       <div className="w-full flex justify-center">
         <div className="w-full ">
-          <h2 className="text-center mb-2">
+          <h2 className="text-center ml-7 mb-2">
             Data from Firebase Realtime Database
           </h2>
 
@@ -201,7 +201,7 @@ function App() {
               </tbody>
             </table>
           ) : (
-            <p className="text-center">No data available</p>
+            <p className="text-center ml-10">No data available</p>
           )}
         </div>
       </div>
@@ -248,7 +248,7 @@ function App() {
       <div className="flex justify-center">
         <button
           onClick={handleExportToPDF}
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4"
+          className="bg-green-500 hover:bg-green-700 text-white ml-10 font-bold py-2 px-4 rounded mt-4"
         >
           Export to PDF
         </button>
